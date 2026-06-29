@@ -3,6 +3,7 @@
 import type { ChatOptions, CommonContentPart, Message, RefusalContentPart } from '@xsai/shared-chat'
 import type { GenerateTextResponse } from "@xsai/generate-text";
 import type { CommonRequestOptions } from "@xsai/shared"
+import type { StreamTextChunkResult } from '@xsai/stream-text'
 
 // Copy from dom-chromium-ai
 
@@ -68,8 +69,6 @@ export async function DownloadModel(options?: LanguageModelCreateCoreOptions, on
 	switch (availability) {
 		case 'available':
 			if (onProgress) onProgress(1)
-		case 'unavailable':
-			return availability
 		case 'downloading':
 		case 'downloadable':
 			const entireOption: LanguageModelCreateOptions = { ...options }
@@ -77,12 +76,15 @@ export async function DownloadModel(options?: LanguageModelCreateCoreOptions, on
 				m.addEventListener('downloadprogress', (e) => onProgress(e.loaded))
 			await LanguageModel.create(entireOption)
 			return 'downloading'
+		case 'unavailable':
+		default:
+			return availability
 	}
 }
 
 // The model should be decided by the user or chrome itself.
 interface ChatProvider<T = string> {
-    chat: () => CommonRequestOptions;
+	chat: () => CommonRequestOptions;
 }
 
 // Because of the format of messages is different between chromium
@@ -144,8 +146,10 @@ export const createChatProvider = (options?: LanguageModelCreateCoreOptions): Ch
 	}
 	return {
 		chat: () => Object.assign({
+			// 'model' and 'baseURL' are mandatory
 			model: 'chromium-prompt-API',
 			baseURL: 'https://chromium-prompt.local/v1',
+
 			fetch: async (_: any, init: RequestInit) => {
 				const initBody = init.body?.toString() || '{}'
 				const body: PromptAIOption = JSON.parse(initBody)
@@ -154,13 +158,65 @@ export const createChatProvider = (options?: LanguageModelCreateCoreOptions): Ch
 				if (systemMessage) createOption.initialPrompts = [systemMessage]
 				const session = await LanguageModel.create(createOption)
 				const resId = crypto.randomUUID()
+				const encoder = new TextEncoder()
 				if (body.stream) {
-
+					const streamCompletion = session.promptStreaming(promptMessages)
+					const sseStream = new ReadableStream({
+						async start(controller) {
+							const enqueueSseEvent = (event: StreamTextChunkResult) => {
+								controller.enqueue(encoder.encode(`data:${JSON.stringify(event)}\n\n`))
+							}
+							for await (const chunk of streamCompletion) {
+								const eventData: StreamTextChunkResult = {
+									id: resId,
+									created: Math.floor(Date.now() / 1000),
+									model: 'chromium-prompt-API',
+									object: 'chat.completion.chunk',
+									system_fingerprint: '',
+									usage: {
+										prompt_tokens: session.contextUsage,
+										completion_tokens: 0,
+										total_tokens: session.contextUsage
+									},
+									choices: [{
+										index: 0,
+										finish_reason: undefined,
+										delta: { role: 'assistant', content: chunk }
+									}]
+								}
+								enqueueSseEvent(eventData)
+							}
+							const finalEvent: StreamTextChunkResult = {
+								id: resId,
+								created: Math.floor(Date.now() / 1000),
+								model: 'chromium-prompt-API',
+								object: 'chat.completion.chunk',
+								system_fingerprint: '',
+								usage: {
+									prompt_tokens: session.contextUsage,
+									completion_tokens: 0,
+									total_tokens: session.contextUsage
+								},
+								choices: [{
+									index: 0,
+									finish_reason: 'stop',
+									delta: { role: 'assistant' }
+								}]
+							}
+							enqueueSseEvent(finalEvent)
+							controller.close()
+						}
+					})
+					return new Response(sseStream, {
+						headers: {
+							'Content-Type': 'text/event-stream',
+						},
+					});
 				} else {
 					const completion = await session.prompt(promptMessages)
 					const res: GenerateTextResponse = {
 						id: resId,
-						created: Date.now(),
+						created: Math.floor(Date.now() / 1000),
 						model: 'chromium-prompt-API',
 						object: 'chat.completion',
 						system_fingerprint: '',
@@ -178,7 +234,6 @@ export const createChatProvider = (options?: LanguageModelCreateCoreOptions): Ch
 							}
 						}]
 					}
-					const encoder = new TextEncoder()
 					return new Response((encoder.encode(JSON.stringify(res))))
 				}
 			},
