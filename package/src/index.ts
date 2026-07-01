@@ -64,7 +64,7 @@ export async function CheckPromptAvailability(options?: LanguageModelCreateCoreO
 }
 
 // max of the progress is 1
-export async function DownloadModel(options?: LanguageModelCreateCoreOptions, onProgress?: (progress: number) => void): Promise<Availability> {
+export async function DownloadModel(onProgress?: (progress: number) => void,options?: LanguageModelCreateCoreOptions): Promise<Availability> {
 	let availability = await CheckPromptAvailability(options)
 	switch (availability) {
 		case 'available':
