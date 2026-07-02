@@ -69,6 +69,7 @@ export async function DownloadModel(onProgress?: (progress: number) => void,opti
 	switch (availability) {
 		case 'available':
 			if (onProgress) onProgress(1)
+			return 'available'
 		case 'downloading':
 		case 'downloadable':
 			const entireOption: LanguageModelCreateOptions = { ...options }
