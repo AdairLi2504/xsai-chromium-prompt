@@ -53,7 +53,7 @@ export interface LanguageModelToolFunction {
 	(...args: any[]): Promise<string>;
 }
 
-export async function CheckPromptAvailability(options?: LanguageModelCreateCoreOptions): Promise<Availability> {
+export async function checkPromptAvailability(options?: LanguageModelCreateCoreOptions): Promise<Availability> {
 	let availability: Availability;
 	try {
 		availability = await LanguageModel.availability(options);
@@ -64,8 +64,8 @@ export async function CheckPromptAvailability(options?: LanguageModelCreateCoreO
 }
 
 // max of the progress is 1
-export async function DownloadModel(onProgress?: (progress: number) => void,options?: LanguageModelCreateCoreOptions): Promise<Availability> {
-	let availability = await CheckPromptAvailability(options)
+export async function downloadModel(onProgress?: (progress: number) => void,options?: LanguageModelCreateCoreOptions): Promise<Availability> {
+	let availability = await checkPromptAvailability(options)
 	switch (availability) {
 		case 'available':
 			if (onProgress) onProgress(1)

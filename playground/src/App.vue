@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CheckPromptAvailability, DownloadModel, createChatProvider } from "xsai-chromium-prompt";
+import { checkPromptAvailability, downloadModel, createChatProvider } from "xsai-chromium-prompt";
 
 import { ref, onMounted, toRaw, computed } from "vue";
 import { generateText } from "@xsai/generate-text";
@@ -17,13 +17,13 @@ const availability = ref("unavailable");
 const downloadModelProgress = ref(0)
 
 onMounted(async () => {
-  const availabilityNow = await CheckPromptAvailability();
+  const availabilityNow = await checkPromptAvailability();
   availability.value = availabilityNow;
   if (availabilityNow === "available") downloadModelProgress.value = 1
 })
 
 async function download() {
-  const resultAvailability = await DownloadModel((p) => downloadModelProgress.value = p)
+  const resultAvailability = await downloadModel((p) => downloadModelProgress.value = p)
   availability.value = resultAvailability
 }
 
@@ -86,14 +86,14 @@ const contextMessagesWithoutSystemPrompt = computed(()=>
     <header flex flex-row items-center justify-between>
       <h1 text-2xl>
         <a href="https://github.com/moeru-ai/xsai">xsAI</a> + <a
-          href="https://huggingface.co/docs/transformers.js/index">🤗 Transformers.js</a> Provider Playground
+          href="https://developer.chrome.com/docs/ai/prompt-api">🦖 Chromium Prompt API</a> Provider Playground
       </h1>
       <div flex flex-row items-center gap-2>
         <button text-lg @click="() => toggleDark()">
           <div v-if="isDark" i-solar:moon-stars-bold-duotone />
           <div v-else i-solar:sun-bold />
         </button>
-        <a href="https://github.com/moeru-ai/xsai-transformers">
+        <a href="https://github.com/AdairLi2504/xsai-chromium-prompt">
           <div i-simple-icons:github />
         </a>
       </div>
@@ -130,7 +130,7 @@ const contextMessagesWithoutSystemPrompt = computed(()=>
       </div>
       <div flex flex-row gap-2>
         <button rounded-lg bg="blue-100 dark:blue-900" px-4 py-2 flex items-center gap-2 @click="execute"
-          :disabled="isExecuting||userInput===''">
+          :disabled="isExecuting||userInput===''||availability!='available'">
           <template v-if="isExecuting">
             <div i-svg-spinners:180-ring />
             <span>Generating...</span>

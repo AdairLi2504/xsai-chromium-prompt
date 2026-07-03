@@ -1,27 +1,29 @@
 {
   "name": "@xsai-chromium-prompt/root",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Chromium Prompt API wrapper makes it easy to use with xsai",
   "private": true,
+  "packageManager": "pnpm@11.8.0",
+  "repository": "github:AdairLi2504/xsai-chromium-prompt",
   "scripts": {
     "build": "pnpm run package:build && pnpm -r -F=\"./playground\" run build",
     "dev": "pnpm run package:build && pnpm -r -F=\"./playground\" run dev",
     "package:build": "pnpm -r -F=\"./package\" run build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "devDependencies": {
+    "pkgroll": "^2.27.1",
+    "typescript": "~5.9.3"
+  },
+  "workspaces":[
+    "package",
+    "playground"
+  ],
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
       "version": "^11.5.3",
       "onFail": "download"
     }
-  },
-  "type": "module",
-  "devDependencies": {
-    "pkgroll": "^2.27.1",
-    "typescript": "~5.9.3"
   }
 }

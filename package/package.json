@@ -1,11 +1,21 @@
 {
   "name": "xsai-chromium-prompt",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build": "pkgroll"
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Chromium Prompt API wrapper makes it easy to use with xsai",
+  "author": {
+    "name": "AdairLi2504",
+    "email": "AdairLi0309@outlook.com",
+    "url": "https://github.com/AdairLi2504"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/AdairLi2504/xsai-chromium-prompt",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdairLi2504/xsai-chromium-prompt.git",
+    "directory": "package"
+  },
+  "bugs": "https://github.com/AdairLi2504/xsai-chromium-prompt/issues",
   "publishConfig": {
     "exports": {
       ".": {
@@ -19,10 +29,9 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "type": "module",
+  "scripts": {
+    "build": "pkgroll"
+  },
   "devDependencies": {
     "@types/dom-chromium-ai": "^0.0.17"
   },
