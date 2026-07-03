@@ -78,7 +78,7 @@ bun install xsai-chromium-prompt
 
 ### Status
 
-xsAI [Transformers.js](https://huggingface.co/docs/transformers.js/en/index) is currently in an early stage of development and may introduce breaking changes at any time.
+xsAI [Chromium Prompt API](https://developer.chrome.com/docs/ai/prompt-api) is currently in an early stage of development and may introduce breaking changes at any time.
 
 ## License
 

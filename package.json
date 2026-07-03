@@ -9,7 +9,8 @@
   "scripts": {
     "build": "pnpm run package:build && pnpm -r -F=\"./playground\" run build",
     "dev": "pnpm run package:build && pnpm -r -F=\"./playground\" run dev",
-    "package:build": "pnpm -r -F=\"./package\" run build"
+    "package:build": "pnpm -r -F=\"./package\" run build",
+    "publish": "pnpm run package:build && cp ./README.md ./package/README.md && pnpm -r -F=\"./package\" publish && rm ./package/README.md"
   },
   "devDependencies": {
     "pkgroll": "^2.27.1",
