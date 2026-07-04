@@ -1,7 +1,7 @@
 {
   "name": "xsai-chromium-prompt",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Chromium Prompt API wrapper makes it easy to use with xsai",
   "author": {
     "name": "AdairLi2504",
