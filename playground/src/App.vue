@@ -39,44 +39,53 @@ const streamOutput = ref('')
 async function execute() {
   const chatProvider = createChatProvider()
   isExecuting.value = true
+  streamOutput.value = ''
   // backup user input
   let tempUserInput = userInput.value
   userInput.value = ""
   // Convert Vue reactive Messages to plain objects for structuredClone.
   let pureMessages = structuredClone(toRaw(contextMessages.value)) as Message[]
   // Construct System Prompt Message
-  if(pureMessages.length==0 && systemPromptInput.value){
-    const systemPromptMessage:Message = {
-      'role':'system',
-      'content':systemPromptInput.value
+  if (pureMessages.length == 0 && systemPromptInput.value) {
+    const systemPromptMessage: Message = {
+      'role': 'system',
+      'content': systemPromptInput.value
     }
-    pureMessages = [systemPromptMessage,...pureMessages]
+    pureMessages = [systemPromptMessage, ...pureMessages]
   }
-  const userMessage:Message = {
-    'role':'user',
-    'content':tempUserInput,
+  const userMessage: Message = {
+    'role': 'user',
+    'content': tempUserInput,
   }
-  pureMessages = [...pureMessages,userMessage]
+  pureMessages = [...pureMessages, userMessage]
   contextMessages.value = pureMessages
   try {
-    const { messages } = await generateText({ ...chatProvider.chat(), messages: pureMessages })
-    contextMessages.value = messages
-  }catch{
+    if (isStream.value) {
+      const { textStream,messages } = streamText({...chatProvider.chat(),messages: pureMessages})
+      for await (const textPart of textStream){
+        streamOutput.value = streamOutput.value + textPart
+      }
+      contextMessages.value = await messages
+    } else {
+      const { messages } = await generateText({ ...chatProvider.chat(), messages: pureMessages })
+      contextMessages.value = messages
+    }
+  } catch {
     userInput.value = tempUserInput
-  }finally {
+  } finally {
     isExecuting.value = false
   }
 }
 
-function clean(){
+function clean() {
   contextMessages.value = []
   userInput.value = ""
   systemPromptInput.value = ""
 }
 
 // render
-const contextMessagesWithoutSystemPrompt = computed(()=>
-  contextMessages.value.filter(i=> i.role != 'system' && i.role != 'developer')
+const contextMessagesWithoutSystemPrompt = computed(() =>
+  contextMessages.value.filter(i => i.role != 'system' && i.role != 'developer')
 )
 
 </script>
@@ -116,8 +125,8 @@ const contextMessagesWithoutSystemPrompt = computed(()=>
         System Prompt
       </h2>
       <div>
-        <textarea v-model="systemPromptInput" h-full w-full rounded-lg bg="neutral-100 dark:neutral-800" p-4
-          font-mono :disabled="contextMessages.length>0" />
+        <textarea v-model="systemPromptInput" h-full w-full rounded-lg bg="neutral-100 dark:neutral-800" p-4 font-mono
+          :disabled="contextMessages.length > 0" />
       </div>
     </div>
     <div flex flex-col gap-2>
@@ -125,12 +134,11 @@ const contextMessagesWithoutSystemPrompt = computed(()=>
         Conversion
       </h2>
       <div>
-        <textarea v-model="userInput" h-full w-full rounded-lg bg="neutral-100 dark:neutral-800" p-4
-          font-mono />
+        <textarea v-model="userInput" h-full w-full rounded-lg bg="neutral-100 dark:neutral-800" p-4 font-mono />
       </div>
       <div flex flex-row gap-2>
         <button rounded-lg bg="blue-100 dark:blue-900" px-4 py-2 flex items-center gap-2 @click="execute"
-          :disabled="isExecuting||userInput===''||availability!='available'">
+          :disabled="isExecuting || userInput === '' || availability != 'available'">
           <template v-if="isExecuting">
             <div i-svg-spinners:180-ring />
             <span>Generating...</span>
@@ -143,14 +151,24 @@ const contextMessagesWithoutSystemPrompt = computed(()=>
           :disabled="isExecuting">
           Clean
         </button>
+        <div px-4 py-2 flex items-center gap-2>
+          <input type="checkbox" v-model="isStream" />
+          Stream
+        </div>
       </div>
     </div>
-    <ol flex flex-col gap-6 v-for="msg in contextMessagesWithoutSystemPrompt" >
-      <li flex flex-col gap-2>
-        <h4 text-lg><b>{{ msg.role }}</b></h4>
-        <div>{{ msg.content }}</div>
-      </li>
-    </ol>
+    <div flex flex-col gap-6>
+      <ol flex flex-col gap-6 v-for="msg in contextMessagesWithoutSystemPrompt">
+        <li flex flex-col gap-2>
+          <h4 text-lg><b>{{ msg.role }}</b></h4>
+          <div>{{ msg.content }}</div>
+        </li>
+      </ol>
+      <div flex flex-col gap-2 v-if="isExecuting && isStream">
+        <h4 text-lg><b>{{ "assistant" }}</b></h4>
+        <div>{{ streamOutput }}</div>
+      </div>
+    </div>
   </div>
 </template>
 

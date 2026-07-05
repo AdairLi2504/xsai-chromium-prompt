@@ -18,7 +18,7 @@ xsAI Chromium Prompt API Provider aligned the API of xsAI:
 import { checkPromptAvailability, createChatProvider } from "xsai-chromium-prompt";
 import { generateText } from "@xsai/generate-text";
 
-let availability = checkPromptAvailability()
+let availability = await checkPromptAvailability()
 if(availability=="available"){
 	const chatProvider = createChatProvider()
 	const { text } = await generateText({ 
