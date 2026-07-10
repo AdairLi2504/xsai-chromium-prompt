@@ -1,6 +1,6 @@
 /// <reference types="dom-chromium-ai" />
 
-import type { ChatOptions, CommonContentPart, Message, RefusalContentPart } from '@xsai/shared-chat'
+import type { ChatOptions, CommonContentPart, Message, RefusalContentPart, AudioContentPart, ImageContentPart } from '@xsai/shared-chat'
 import type { GenerateTextResponse } from "@xsai/generate-text";
 import type { CommonRequestOptions } from "@xsai/shared"
 import type { StreamTextChunkResult } from '@xsai/stream-text'
@@ -42,6 +42,8 @@ export interface LanguageModelExpected {
 	languages?: string[];
 }
 
+type LanguageModelMessageType = "text" | "image" | "audio";
+
 export interface LanguageModelTool {
 	name: string;
 	description: string;
@@ -64,7 +66,7 @@ export async function checkPromptAvailability(options?: LanguageModelCreateCoreO
 }
 
 // max of the progress is 1
-export async function downloadModel(onProgress?: (progress: number) => void,options?: LanguageModelCreateCoreOptions): Promise<Availability> {
+export async function downloadModel(onProgress?: (progress: number) => void, options?: LanguageModelCreateCoreOptions): Promise<Availability> {
 	let availability = await checkPromptAvailability(options)
 	switch (availability) {
 		case 'available':
@@ -90,7 +92,24 @@ interface ChatProvider<T = string> {
 
 // Because of the format of messages is different between chromium
 
-function convertXsaiContentToPromptApiContent(content: string | (CommonContentPart | RefusalContentPart)[]): LanguageModelMessageContent[] | string {
+async function convertAudioContentToAudioBuffer(content: AudioContentPart): Promise<AudioBuffer> {
+	const binaryString = window.atob(content.input_audio.data)
+	const bytes = new Uint8Array(binaryString.length)
+	for (let i = 0; i < binaryString.length; i++) 
+		bytes[i] = binaryString.charCodeAt(i)
+	const arrayBuffer = bytes.buffer
+	const audioContext = new window.AudioContext();
+	return audioContext.decodeAudioData(arrayBuffer)
+}
+
+async function convertImageContentToImageBitmapSource(content: ImageContentPart):Promise<ImageBitmap> {
+	const res = await fetch(content.image_url.url)
+	if(!res.ok) throw new Error('FailedToGetImage')
+	const blob = await res.blob()
+	return createImageBitmap(blob)
+}
+
+async function convertXsaiContentToPromptApiContent(content: string | (CommonContentPart | RefusalContentPart)[]): Promise<string | LanguageModelMessageContent[]> {
 	if (typeof content === "string") {
 		return content
 	} else if (typeof content === "object") {
@@ -102,6 +121,16 @@ function convertXsaiContentToPromptApiContent(content: string | (CommonContentPa
 						type: 'text',
 						value: contentItem.text
 					}); break
+				case 'input_audio':
+					promptContent.push({
+						type:'audio',
+						value: await convertAudioContentToAudioBuffer(contentItem)
+					}); break
+				case 'image_url':
+					promptContent.push({
+						type:'image',
+						value: await convertImageContentToImageBitmapSource(contentItem)
+					}); break
 			}
 		}
 		return promptContent
@@ -110,7 +139,7 @@ function convertXsaiContentToPromptApiContent(content: string | (CommonContentPa
 	}
 }
 
-function convertXsaiToPromptApi(messages: Message[]): { promptMessages: LanguageModelMessage[], systemMessage: LanguageModelSystemMessage | null | undefined } {
+async function convertXsaiToPromptApi(messages: Message[]): Promise<{ promptMessages: LanguageModelMessage[]; systemMessage: LanguageModelSystemMessage | null | undefined; }> {
 	let systemMessage: LanguageModelSystemMessage | null = null
 	let promptMessages: LanguageModelMessage[] = []
 	if (messages.length > 0) {
@@ -118,7 +147,7 @@ function convertXsaiToPromptApi(messages: Message[]): { promptMessages: Language
 		if (possibleSystemMessage && (possibleSystemMessage.role === "developer" || possibleSystemMessage.role === "system")) {
 			systemMessage = {
 				role: 'system',
-				content: convertXsaiContentToPromptApiContent(possibleSystemMessage.content)
+				content: await convertXsaiContentToPromptApiContent(possibleSystemMessage.content)
 			}
 			messages.shift()
 		}
@@ -128,12 +157,12 @@ function convertXsaiToPromptApi(messages: Message[]): { promptMessages: Language
 					if (messageItem.content)
 						promptMessages.push({
 							role: 'assistant',
-							content: convertXsaiContentToPromptApiContent(messageItem.content)
+							content: await convertXsaiContentToPromptApiContent(messageItem.content)
 						}); break
 				case 'user':
 					promptMessages.push({
 						role: 'user',
-						content: convertXsaiContentToPromptApiContent(messageItem.content)
+						content: await convertXsaiContentToPromptApiContent(messageItem.content)
 					})
 			}
 		}
@@ -154,7 +183,7 @@ export const createChatProvider = (options?: LanguageModelCreateCoreOptions): Ch
 			fetch: async (_: any, init: RequestInit) => {
 				const initBody = init.body?.toString() || '{}'
 				const body: PromptAIOption = JSON.parse(initBody)
-				const { promptMessages, systemMessage } = convertXsaiToPromptApi(body.messages)
+				const { promptMessages, systemMessage } = await convertXsaiToPromptApi(body.messages)
 				const createOption: LanguageModelCreateOptions = options ?? {}
 				if (systemMessage) createOption.initialPrompts = [systemMessage]
 				const session = await LanguageModel.create(createOption)
