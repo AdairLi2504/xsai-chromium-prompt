@@ -25,16 +25,17 @@
   "dependencies": {
     "@vueuse/core": "^14.3.0",
     "@xsai/generate-text": "catalog:",
-    "@xsai/stream-text": "catalog:",
     "@xsai/shared-chat": "catalog:",
+    "@xsai/stream-text": "catalog:",
     "xsai-chromium-prompt": "workspace:^"
   },
   "devDependencies": {
-    "@tsconfig/node24": "^24.0.4",
-    "@types/node": "^24.13.2",
     "@iconify-json/simple-icons": "^1.2.58",
     "@iconify-json/solar": "^1.2.5",
     "@iconify-json/svg-spinners": "^1.2.4",
+    "@iconify-json/at-icons": "^1.0.2",
+    "@tsconfig/node24": "^24.0.4",
+    "@types/node": "^24.13.2",
     "@unocss/reset": "^66.7.4",
     "@vitejs/plugin-vue": "^6.0.7",
     "@vue/tsconfig": "^0.9.1",
