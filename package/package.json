@@ -1,21 +1,21 @@
 {
   "name": "xsai-chromium-prompt",
   "type": "module",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Chromium Prompt API wrapper makes it easy to use with xsai",
   "author": {
-    "name": "AdairLi2504",
-    "email": "AdairLi0309@outlook.com",
-    "url": "https://github.com/AdairLi2504"
+    "name": "Moeru AI",
+    "email": "neko@moeru.ai",
+    "url": "https://github.com/moeru-ai"
   },
   "license": "MIT",
-  "homepage": "https://github.com/AdairLi2504/xsai-chromium-prompt",
+  "homepage": "https://github.com/moeru-ai/xsai-chromium-prompt",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AdairLi2504/xsai-chromium-prompt.git",
+    "url": "git+https://github.com/moeru-ai/xsai-chromium-prompt.git",
     "directory": "package"
   },
-  "bugs": "https://github.com/AdairLi2504/xsai-chromium-prompt/issues",
+  "bugs": "https://github.com/moeru-ai/xsai-chromium-prompt/issues",
   "publishConfig": {
     "exports": {
       ".": {

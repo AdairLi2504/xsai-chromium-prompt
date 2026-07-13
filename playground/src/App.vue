@@ -185,7 +185,7 @@ const contextMessagesWithoutSystemPrompt = computed(() =>
           <div v-if="isDark" i-solar:moon-stars-bold-duotone />
           <div v-else i-solar:sun-bold />
         </button>
-        <a href="https://github.com/AdairLi2504/xsai-chromium-prompt">
+        <a href="https://github.com/moeru-ai/xsai-chromium-prompt">
           <div i-simple-icons:github />
         </a>
       </div>

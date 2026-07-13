@@ -8,7 +8,7 @@ AI on Chrome)
 [![npm version](https://flat.badgen.net/npm/v/xsai-chromium-prompt?color=cyan)](https://npmjs.com/package/xsai-chromium-prompt)
 [![npm downloads](https://flat.badgen.net/npm/dm/xsai-chromium-prompt?color=cyan)](https://npm.chart.dev/xsai-chromium-prompt)
 [![bundle size](https://flat.badgen.net/bundlephobia/minzip/xsai-chromium-prompt?color=cyan)](https://bundlephobia.com/package/xsai-chromium-prompt)
-[![license](https://flat.badgen.net/github/license/AdairLi2504/xsai-chromium-prompt?color=cyan)](https://github.com/AdairLi2504/xsai-chromium-prompt/blob/main/LICENSE.md)
+[![license](https://flat.badgen.net/github/license/moeru-ai/xsai-chromium-prompt?color=cyan)](https://github.com/moeru-ai/xsai-chromium-prompt/blob/main/LICENSE)
 
 <!-- /automd -->
 
@@ -19,7 +19,7 @@ import { checkPromptAvailability, createChatProvider } from "xsai-chromium-promp
 import { generateText } from "@xsai/generate-text";
 
 let availability = await checkPromptAvailability()
-if(availability=="available"){
+if ( availability === "available" ) {
 	const chatProvider = createChatProvider()
 	const { text } = await generateText({ 
 		...chatProvider.chat(), 
