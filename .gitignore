@@ -35,3 +35,5 @@ typed-router.d.ts
 !playground/
 
 package/README.md
+# Local Netlify folder
+.netlify
