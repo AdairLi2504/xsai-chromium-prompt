@@ -163,19 +163,17 @@ async function convertXsaiToPromptApi(messages: Message[]): Promise<{ promptMess
     }
 
     for (let i = startIndex; i < messages.length; i++) {
-      const messageItem = messages[i]
+      const messageItem = messages[i]!
       switch (messageItem.role) {
         case 'assistant':
-          if (messageItem.content) {
-            promptMessages.push({
-              content: await convertXsaiContentToPromptApiContent(messageItem.content),
-              role: 'assistant',
-            })
-          }
+          promptMessages.push({
+            content: await convertXsaiContentToPromptApiContent(messageItem.content ?? ''),
+            role: 'assistant',
+          })
           break
         case 'user':
           promptMessages.push({
-            content: await convertXsaiContentToPromptApiContent(messageItem.content),
+            content: await convertXsaiContentToPromptApiContent(messageItem.content!),
             role: 'user',
           })
       }
