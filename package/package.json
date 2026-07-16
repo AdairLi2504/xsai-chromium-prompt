@@ -30,15 +30,12 @@
     ".": "./src/index.ts"
   },
   "files": [
-    "dist",
     "LICENSE",
-    "README.md"
+    "README.md",
+    "dist"
   ],
   "scripts": {
     "build": "pkgroll"
-  },
-  "devDependencies": {
-    "@types/dom-chromium-ai": "^0.0.17"
   },
   "dependencies": {
     "@xsai-ext/providers": "~0.4.4",
@@ -46,5 +43,8 @@
     "@xsai/shared": "~0.4.4",
     "@xsai/shared-chat": "catalog:",
     "@xsai/stream-text": "catalog:"
+  },
+  "devDependencies": {
+    "@types/dom-chromium-ai": "^0.0.17"
   }
 }

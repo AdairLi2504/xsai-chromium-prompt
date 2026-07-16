@@ -6,8 +6,6 @@ withDefaults(defineProps<{
 }>(), {
   percentage: 0,
 })
-
-
 </script>
 
 <template>

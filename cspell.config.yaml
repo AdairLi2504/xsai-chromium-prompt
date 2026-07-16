@@ -1,0 +1,55 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - Attributify
+  - audioworklet
+  - automd
+  - bumpp
+  - changelogithub
+  - crouchcd
+  - defu
+  - denoland
+  - dtypes
+  - elysia
+  - eslintcache
+  - eventa
+  - feaxios
+  - fumadocs
+  - gpuu
+  - huggingface
+  - iconify
+  - importantimport
+  - itty
+  - masknet
+  - matchall
+  - modelcontextprotocol
+  - moeru
+  - nolyfill
+  - onnxruntime
+  - PKCE
+  - pkgroll
+  - Pretrained
+  - sizecheck
+  - sonarjs
+  - streamable
+  - taze
+  - tolist
+  - twoslash
+  - unbird
+  - unocss
+  - unplugin
+  - valibot
+  - vercel
+  - vueuse
+  - webgpu
+  - webworkers
+  - whatwg
+  - Xenova
+  - xsai
+  - xsmcp
+  - xsrpc
+  - xsschema
+ignoreWords: []
+import: []

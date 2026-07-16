@@ -15,11 +15,14 @@
     "url": "git+https://github.com/moeru-ai/xsai-chromium-prompt.git",
     "directory": "playground"
   },
+  "engines": {
+    "node": "^22.18.0 || >=24.12.0"
+  },
   "scripts": {
-    "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
-    "preview": "vite preview",
     "build-only": "vite build",
+    "dev": "vite",
+    "preview": "vite preview",
     "type-check": "vue-tsc --build"
   },
   "dependencies": {
@@ -30,10 +33,10 @@
     "xsai-chromium-prompt": "workspace:^"
   },
   "devDependencies": {
+    "@iconify-json/at-icons": "^1.0.2",
     "@iconify-json/simple-icons": "^1.2.58",
     "@iconify-json/solar": "^1.2.5",
     "@iconify-json/svg-spinners": "^1.2.4",
-    "@iconify-json/at-icons": "^1.0.2",
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.13.2",
     "@unocss/reset": "^66.7.4",
@@ -43,11 +46,7 @@
     "typescript": "~6.0.0",
     "unocss": "^66.7.4",
     "vite": "^8.0.16",
-    "vite-plugin-vue-devtools": "^8.1.2",
     "vue": "^3.5.38",
     "vue-tsc": "^3.3.5"
-  },
-  "engines": {
-    "node": "^22.18.0 || >=24.12.0"
   }
 }

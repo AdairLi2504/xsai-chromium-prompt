@@ -55,7 +55,7 @@ function handleFileChange(e: Event) {
           isDraggingDebounced ? 'text-primary-500 dark:text-primary-400' : 'text-neutral-400 dark:text-neutral-500',
         ]"
       >
-        <div i-solar:upload-square-line-duotone text-xl/>
+        <div i-solar:upload-square-line-duotone text-xl />
         <p font-medium text="center lg">
           Upload
         </p>

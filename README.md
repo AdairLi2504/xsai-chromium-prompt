@@ -1,6 +1,6 @@
 # xsAI 🦖 Chromium Prompt API Provider
 
-A special [Chromium Prompt API](https://developer.chrome.com/docs/ai/prompt-api) provider for [`xsai`](https://github.com/moeru-ai/xsai), the extra-small AI SDK. Capable of performing tasks of text generations right in the Chromium-based browser (due to 
+A special [Chromium Prompt API](https://developer.chrome.com/docs/ai/prompt-api) provider for [`xsai`](https://github.com/moeru-ai/xsai), the extra-small AI SDK. Capable of performing tasks of text generations right in the Chromium-based browser (due to
 AI on Chrome)
 
 <!-- automd:badges name="xsai" provider="badgen" color="cyan" license bundlephobia -->
@@ -15,19 +15,19 @@ AI on Chrome)
 xsAI Chromium Prompt API Provider aligned the API of xsAI:
 
 ```ts
-import { checkPromptAvailability, createChatProvider } from "xsai-chromium-prompt";
-import { generateText } from "@xsai/generate-text";
+import { generateText } from '@xsai/generate-text'
+import { checkPromptAvailability, createChatProvider } from 'xsai-chromium-prompt'
 
-let availability = await checkPromptAvailability()
-if ( availability === "available" ) {
-	const chatProvider = createChatProvider()
-	const { text } = await generateText({ 
-		...chatProvider.chat(), 
-		messages: [{
-      		content: 'Why is the sky blue?',
-      		role: 'user'
-    	}]
-	})
+const availability = await checkPromptAvailability()
+if (availability === 'available') {
+  const chatProvider = createChatProvider()
+  const { text } = await generateText({
+    ...chatProvider.chat(),
+    messages: [{
+      content: 'Why is the sky blue?',
+      role: 'user'
+    }]
+  })
 }
 ```
 
@@ -43,7 +43,7 @@ if ( availability === "available" ) {
 
 ### `downloadModel`
 
-When using the Prompt API download monitor, the progress callback does not return `1.0` upon completion. Instead, it stops at a value slightly below 1.0 (e.g., `0.97`), even though the download has finished successfully. Since that, the `onProgress` arguement will has the same problem that the last call of this function will return a value slightly below 1.0 (e.g., `0.97`) too. 
+When using the Prompt API download monitor, the progress callback does not return `1.0` upon completion. Instead, it stops at a value slightly below 1.0 (e.g., `0.97`), even though the download has finished successfully. Since that, the `onProgress` arguement will has the same problem that the last call of this function will return a value slightly below 1.0 (e.g., `0.97`) too.
 
 To solve this problem, you can utillize a lifecycle hook to run `checkPromptAvailability` that detects the availability. When the availability is `available`, set the progress to 1.
 The code of the playground gives an example.
