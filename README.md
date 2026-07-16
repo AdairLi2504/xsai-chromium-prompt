@@ -74,6 +74,17 @@ bun install xsai-chromium-prompt
 ```
 <!-- /automd -->
 
+### Multimodal
+
+The Chromium Prompt API's LLM supports multimodal inputs, including image and audio. To enable these capabilities, developers must explicitly declare the expected input types when initializing the chat provider.
+
+For example
+```ts
+const chatProvider = createChatProvider({
+  expectedInputs: [{ type: 'audio' }, { type: 'image' }]
+})
+```
+
 ### Examples [(see above)](#xsai--chromium-prompt-api-provider)
 
 ### Status
