@@ -1,7 +1,7 @@
 {
   "name": "@xsai-chromium-prompt/root",
   "type": "module",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "packageManager": "pnpm@11.8.0",
   "description": "Chromium Prompt API wrapper makes it easy to use with xsai",

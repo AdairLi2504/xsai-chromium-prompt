@@ -1,7 +1,7 @@
 {
   "name": "xsai-chromium-prompt",
   "type": "module",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Chromium Prompt API wrapper makes it easy to use with xsai",
   "author": {
     "name": "Moeru AI",
@@ -38,9 +38,9 @@
     "build": "pkgroll"
   },
   "dependencies": {
-    "@xsai-ext/providers": "~0.4.4",
+    "@xsai-ext/providers": "^0.5.0",
     "@xsai/generate-text": "catalog:",
-    "@xsai/shared": "~0.4.4",
+    "@xsai/shared": "~0.5.0",
     "@xsai/shared-chat": "catalog:",
     "@xsai/stream-text": "catalog:"
   },

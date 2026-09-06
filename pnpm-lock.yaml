@@ -206,14 +206,14 @@ settings:
 catalogs:
   default:
     '@xsai/generate-text':
-      specifier: ~0.4.4
-      version: 0.4.4
+      specifier: ^0.5.0
+      version: 0.5.0
     '@xsai/shared-chat':
-      specifier: ~0.4.4
-      version: 0.4.4
+      specifier: ^0.5.0
+      version: 0.5.0
     '@xsai/stream-text':
-      specifier: ~0.5.0-beta.6
-      version: 0.5.0-beta.7
+      specifier: ^0.5.0
+      version: 0.5.0
 
 importers:
 
@@ -247,20 +247,20 @@ importers:
   package:
     dependencies:
       '@xsai-ext/providers':
-        specifier: ~0.4.4
-        version: 0.4.4
+        specifier: ^0.5.0
+        version: 0.5.0
       '@xsai/generate-text':
         specifier: 'catalog:'
-        version: 0.4.4
+        version: 0.5.0
       '@xsai/shared':
-        specifier: ~0.4.4
-        version: 0.4.4
+        specifier: ~0.5.0
+        version: 0.5.0
       '@xsai/shared-chat':
         specifier: 'catalog:'
-        version: 0.4.4
+        version: 0.5.0
       '@xsai/stream-text':
         specifier: 'catalog:'
-        version: 0.5.0-beta.7
+        version: 0.5.0
     devDependencies:
       '@types/dom-chromium-ai':
         specifier: ^0.0.17
@@ -273,13 +273,13 @@ importers:
         version: 14.3.0(vue@3.5.39(typescript@6.0.3))
       '@xsai/generate-text':
         specifier: 'catalog:'
-        version: 0.4.4
+        version: 0.5.0
       '@xsai/shared-chat':
         specifier: 'catalog:'
-        version: 0.4.4
+        version: 0.5.0
       '@xsai/stream-text':
         specifier: 'catalog:'
-        version: 0.5.0-beta.7
+        version: 0.5.0
       xsai-chromium-prompt:
         specifier: workspace:^
         version: link:../package
@@ -1456,29 +1456,23 @@ packages:
     peerDependencies:
       vue: ^3.5.0
 
-  '@xsai-ext/providers@0.4.4':
-    resolution: {integrity: sha512-PVk3IFOPzPyvss9zY6IO6pJ890F5B6LWGWuhU6DzofWMTnqcUzm0hR2Ml/Qo8kZa3Qy/DZkUT0O1T+5g/fZkWw==}
+  '@xsai-ext/providers@0.5.0':
+    resolution: {integrity: sha512-aCDgQfnyOZaDj3NDOuUnqYI3+IQB0a0uRnGYiwg3SbZiP+VIlcDrCj/5qlC9OeXs6VEH+Xxgyxs5SnM0BS4grQ==}
 
-  '@xsai/generate-text@0.4.4':
-    resolution: {integrity: sha512-eDLeRaaeY3SyjrICeIfPXksqfk36oXLTcjinDNLrsiFHqmNvxfbq3WRccy6hjZy4aOWhkV+qPFZnB3ZIyTfs8w==}
+  '@xsai/generate-text@0.5.0':
+    resolution: {integrity: sha512-VONNlaayHgijhovG6cv8FGe0fpwRu+vB35IR4hhLKUQqBUHUrLczf6Mc9PyfbRniyKFwYO8icD0YbYCgGKa2Yg==}
 
-  '@xsai/shared-chat@0.4.4':
-    resolution: {integrity: sha512-R/lJDt6SnENVaJcUCO1USVuO/G6qtCbJqopPqARF1n20KWDbchLwW/nvkuZH1TM9vMxaywVNmO9sNJ+uoWJEPA==}
+  '@xsai/shared-chat@0.5.0':
+    resolution: {integrity: sha512-y3hr0vqul6BHPNmwnGEbIgC/P7eVyRgik+srdGYDJc+IsCBlD0Aw2QhmxJtQd89XrJkv0XN9GG7/5HoDLpYeOw==}
 
-  '@xsai/shared-chat@0.5.0-beta.7':
-    resolution: {integrity: sha512-Xzq9qhQKbnVhdTjdNKygCsH60jSMkUfUEdFN7CNT61e4LRzSL2IfrU9IJnK0cDFaVEBuaDrd53tUzdbEO4jwiQ==}
+  '@xsai/shared-stream@0.5.0':
+    resolution: {integrity: sha512-SYCrnjD63Uc2JaxuN+nLKNq24Csspz/+fqHIXFVMQXwoNUuNZzPUd1fverPYJmQ2IGCvdQD6+Jue7rm6OQTJZA==}
 
-  '@xsai/shared-stream@0.5.0-beta.7':
-    resolution: {integrity: sha512-flmKcBWsa7nZPMz+cJNepHfOqw59FQ3M2e43v6q01178HFcEuQoL3nvZn3d6ZHctGHQr9ikJoo1NDcjJ1ETjmA==}
+  '@xsai/shared@0.5.0':
+    resolution: {integrity: sha512-o8arA7Lew9pedOG2bmbLLpmjLU9DyYqW6ByvHK1pxQdhLDRRngyDA8PeEFHwn1SZ0shuedNhI5vYfYIGaUvJ5w==}
 
-  '@xsai/shared@0.4.4':
-    resolution: {integrity: sha512-ZrOeRJ0fqV8YRDwyQbYJx1N8Fe2UTl2psjV7ucYJ+gMr3oWzrmNfTX9zrpV9zwzBMUe6VvqhK/iJzz8p4jYlsw==}
-
-  '@xsai/shared@0.5.0-beta.7':
-    resolution: {integrity: sha512-w2nplQtguUWmLRobtQJS7rwWW8FvU7Bb7jrHsQGJ7KbpTQV9vjYQwY9+owdrUGmTpXg/D/JiaEvSkpKYMHY3nw==}
-
-  '@xsai/stream-text@0.5.0-beta.7':
-    resolution: {integrity: sha512-6k7Go5puN58epLW5dGQrjwcpXCj5p/mj5WqpX31ePgIPcqcg7ewOW5Tlumnq2KbyA/+lYAPF2mtMkxKdiG9ALA==}
+  '@xsai/stream-text@0.5.0':
+    resolution: {integrity: sha512-JmWQl9kiobGyWEjU3N68aFsiN6u+0okm6eT/G6n4/C/XznF0nAgj8BhEAxfFE+Jq+YA9Gl4iukUdbt/JzBGtmw==}
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -1952,6 +1946,7 @@ packages:
   eslint@9.39.5:
     resolution: {integrity: sha512-DgZS62aPLXKlnxILS/AYCoRvHaZeXceIzlXPkkGGzJWSow1aEk0lbTlxUSlyjC8jcaKxAdOnTDz+o1JFSBsyjw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -4128,36 +4123,30 @@ snapshots:
     dependencies:
       vue: 3.5.39(typescript@6.0.3)
 
-  '@xsai-ext/providers@0.4.4':
+  '@xsai-ext/providers@0.5.0':
     dependencies:
-      '@xsai/shared': 0.4.4
+      '@xsai/shared': 0.5.0
 
-  '@xsai/generate-text@0.4.4':
+  '@xsai/generate-text@0.5.0':
     dependencies:
-      '@xsai/shared': 0.4.4
-      '@xsai/shared-chat': 0.4.4
+      '@xsai/shared': 0.5.0
+      '@xsai/shared-chat': 0.5.0
 
-  '@xsai/shared-chat@0.4.4':
+  '@xsai/shared-chat@0.5.0':
     dependencies:
-      '@xsai/shared': 0.4.4
+      '@xsai/shared': 0.5.0
 
-  '@xsai/shared-chat@0.5.0-beta.7':
+  '@xsai/shared-stream@0.5.0':
     dependencies:
-      '@xsai/shared': 0.5.0-beta.7
+      '@xsai/shared': 0.5.0
 
-  '@xsai/shared-stream@0.5.0-beta.7':
+  '@xsai/shared@0.5.0': {}
+
+  '@xsai/stream-text@0.5.0':
     dependencies:
-      '@xsai/shared': 0.5.0-beta.7
-
-  '@xsai/shared@0.4.4': {}
-
-  '@xsai/shared@0.5.0-beta.7': {}
-
-  '@xsai/stream-text@0.5.0-beta.7':
-    dependencies:
-      '@xsai/shared': 0.5.0-beta.7
-      '@xsai/shared-chat': 0.5.0-beta.7
-      '@xsai/shared-stream': 0.5.0-beta.7
+      '@xsai/shared': 0.5.0
+      '@xsai/shared-chat': 0.5.0
+      '@xsai/shared-stream': 0.5.0
 
   acorn-jsx@5.3.2(acorn@8.17.0):
     dependencies:
