@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.2.2",
   "private": true,
-  "packageManager": "pnpm@11.8.0",
+  "packageManager": "pnpm@12.5.1",
   "description": "Chromium Prompt API wrapper makes it easy to use with xsai",
   "repository": "github:moeru-ai/xsai-chromium-prompt",
   "scripts": {
@@ -29,7 +29,7 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "^11.5.3",
+      "version": "12.5.1",
       "onFail": "download"
     }
   },
