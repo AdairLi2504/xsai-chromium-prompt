@@ -218,17 +218,41 @@ export const createChatProvider = (options?: LanguageModelCreateCoreOptions): Ch
         if (body.stream) {
           const streamCompletion = session.promptStreaming(promptMessages)
           const sseStream = new ReadableStream({
+            // If Client Stop The Stream
+            async cancel() {
+              session.destroy?.()
+            },
             async start(controller) {
-              // eslint-disable-next-line sonarjs/no-nested-functions
-              const enqueueSseEvent = (event: StreamTextChunkResult) => {
-                // eslint-disable-next-line @masknet/string-no-data-url
-                controller.enqueue(encoder.encode(`data:${JSON.stringify(event)}\n\n`))
-              }
-              for await (const chunk of streamCompletion) {
-                const eventData: StreamTextChunkResult = {
+              try {
+                // eslint-disable-next-line sonarjs/no-nested-functions
+                const enqueueSseEvent = (event: StreamTextChunkResult) => {
+                  // eslint-disable-next-line @masknet/string-no-data-url
+                  controller.enqueue(encoder.encode(`data:${JSON.stringify(event)}\n\n`))
+                }
+                for await (const chunk of streamCompletion) {
+                  const eventData: StreamTextChunkResult = {
+                    choices: [{
+                      delta: { content: chunk, role: 'assistant' },
+                      finish_reason: undefined,
+                      index: 0,
+                    }],
+                    created: Math.floor(Date.now() / 1000),
+                    id: resId,
+                    model: 'chromium-prompt-API',
+                    object: 'chat.completion.chunk',
+                    system_fingerprint: '',
+                    usage: {
+                      completion_tokens: 0,
+                      prompt_tokens: session.contextUsage,
+                      total_tokens: session.contextUsage,
+                    },
+                  }
+                  enqueueSseEvent(eventData)
+                }
+                const finalEvent: StreamTextChunkResult = {
                   choices: [{
-                    delta: { content: chunk, role: 'assistant' },
-                    finish_reason: undefined,
+                    delta: { role: 'assistant' },
+                    finish_reason: 'stop',
                     index: 0,
                   }],
                   created: Math.floor(Date.now() / 1000),
@@ -242,27 +266,12 @@ export const createChatProvider = (options?: LanguageModelCreateCoreOptions): Ch
                     total_tokens: session.contextUsage,
                   },
                 }
-                enqueueSseEvent(eventData)
+                enqueueSseEvent(finalEvent)
+                controller.close()
               }
-              const finalEvent: StreamTextChunkResult = {
-                choices: [{
-                  delta: { role: 'assistant' },
-                  finish_reason: 'stop',
-                  index: 0,
-                }],
-                created: Math.floor(Date.now() / 1000),
-                id: resId,
-                model: 'chromium-prompt-API',
-                object: 'chat.completion.chunk',
-                system_fingerprint: '',
-                usage: {
-                  completion_tokens: 0,
-                  prompt_tokens: session.contextUsage,
-                  total_tokens: session.contextUsage,
-                },
+              finally {
+                session.destroy?.()
               }
-              enqueueSseEvent(finalEvent)
-              controller.close()
             },
           })
           return new Response(sseStream, {
@@ -272,28 +281,33 @@ export const createChatProvider = (options?: LanguageModelCreateCoreOptions): Ch
           })
         }
         else {
-          const completion = await session.prompt(promptMessages)
-          const res: GenerateTextResponse = {
-            choices: [{
-              finish_reason: 'stop',
-              index: 0,
-              message: {
-                content: completion,
-                role: 'assistant',
+          try {
+            const completion = await session.prompt(promptMessages)
+            const res: GenerateTextResponse = {
+              choices: [{
+                finish_reason: 'stop',
+                index: 0,
+                message: {
+                  content: completion,
+                  role: 'assistant',
+                },
+              }],
+              created: Math.floor(Date.now() / 1000),
+              id: resId,
+              model: 'chromium-prompt-API',
+              object: 'chat.completion',
+              system_fingerprint: '',
+              usage: {
+                completion_tokens: 0,
+                prompt_tokens: session.contextUsage,
+                total_tokens: session.contextUsage,
               },
-            }],
-            created: Math.floor(Date.now() / 1000),
-            id: resId,
-            model: 'chromium-prompt-API',
-            object: 'chat.completion',
-            system_fingerprint: '',
-            usage: {
-              completion_tokens: 0,
-              prompt_tokens: session.contextUsage,
-              total_tokens: session.contextUsage,
-            },
+            }
+            return new Response((encoder.encode(JSON.stringify(res))))
           }
-          return new Response((encoder.encode(JSON.stringify(res))))
+          finally {
+            session.destroy?.()
+          }
         }
       },
 
