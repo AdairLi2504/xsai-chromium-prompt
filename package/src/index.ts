@@ -70,6 +70,21 @@ export async function checkPromptAvailability(options?: LanguageModelCreateCoreO
   }
 }
 
+export function checkPromptExistSync(): boolean {
+  if ((typeof LanguageModel === 'function') && (typeof LanguageModel.create === 'function')) {
+    try {
+      LanguageModel.create()
+      return true
+    }
+    catch {
+      return false
+    }
+  }
+  else {
+    return false
+  }
+}
+
 // max of the progress is 1
 export async function downloadModel(onProgress?: (progress: number) => void, options?: LanguageModelCreateCoreOptions): Promise<Availability> {
   const availability = await checkPromptAvailability(options)

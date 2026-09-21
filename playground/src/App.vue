@@ -5,7 +5,7 @@ import { useDark, useToggle } from '@vueuse/core'
 import { generateText } from '@xsai/generate-text'
 import { streamText } from '@xsai/stream-text'
 import { computed, onMounted, ref, toRaw } from 'vue'
-import { checkPromptAvailability, createChatProvider, downloadModel } from 'xsai-chromium-prompt'
+import { checkPromptAvailability, checkPromptExistSync, createChatProvider, downloadModel } from 'xsai-chromium-prompt'
 
 import InputFile from './components/InputFile.vue'
 import Progress from './components/Progress.vue'
@@ -15,11 +15,14 @@ const toggleDark = useToggle(isDark)
 
 // Check Availability
 const availability = ref('unavailable')
+const existence = ref(false)
 const downloadModelProgress = ref(0)
 
 onMounted(async () => {
   const availabilityNow = await checkPromptAvailability()
+  const existenceNow = checkPromptExistSync()
   availability.value = availabilityNow
+  existence.value = existenceNow
   if (availabilityNow === 'available')
     downloadModelProgress.value = 1
 })
@@ -197,7 +200,7 @@ const contextMessagesWithoutSystemPrompt = computed(() =>
     </header>
     <div flex flex-col gap-2>
       <h2 text-xl>
-        Status
+        Status ({{ existence ? "Prompt API exists" : "Prompt API does not exist" }})
       </h2>
       <div w-full flex flex-row gap-2>
         <div w-full>
