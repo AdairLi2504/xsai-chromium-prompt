@@ -222,7 +222,7 @@ export const createChatProvider = (options?: LanguageModelCreateCoreOptions): Ch
             async cancel() {
               session.destroy?.()
             },
-            async start(controller) {
+            async pull(controller) {
               try {
                 // eslint-disable-next-line sonarjs/no-nested-functions
                 const enqueueSseEvent = (event: StreamTextChunkResult) => {
