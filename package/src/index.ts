@@ -71,9 +71,9 @@ export async function checkPromptAvailability(options?: LanguageModelCreateCoreO
 }
 
 export function checkPromptExistSync(): boolean {
-  if ((typeof LanguageModel === 'function') && (typeof LanguageModel.create === 'function')) {
+  if ((typeof LanguageModel === 'function') && (typeof LanguageModel.create === 'function') && (typeof LanguageModel.availability === 'function')) {
     try {
-      LanguageModel.create()
+      LanguageModel.availability()
       return true
     }
     catch {
